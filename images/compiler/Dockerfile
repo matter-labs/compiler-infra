@@ -1,7 +1,8 @@
 FROM matterlabs/llvm_runner:latest as builder 
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 RUN mkdir -p /home/docker/.ssh
-COPY id_rsa /home/docker/.ssh/id_rsa
+RUN --mount=type=secret,id=ssh_key cp /run/secrets/ssh_key /home/docker/.ssh/id_rsa 
+
 RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /home/docker/.ssh/config
 RUN chown -R docker:docker /home/docker/.ssh
 RUN chown -R docker:docker /usr/local/cargo
