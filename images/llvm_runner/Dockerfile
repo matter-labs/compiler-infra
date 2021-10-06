@@ -9,7 +9,9 @@ RUN apt-get update && \
         cmake gcc g++ \
         libpq-dev pkg-config \
         software-properties-common jq \
-        libncurses5 xz-utils wget  && \
+        openssh-client git \
+        build-essential \
+        libncurses5 xz-utils wget gnupg && \
     rm -rf /var/lib/apt/lists/* 
 
 # Install Rust and required cargo packages
@@ -18,7 +20,6 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     PATH=/usr/local/cargo/bin:$PATH
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 
-RUN apt-get update && apt-get install -y gnupg
 
 #Getting prebuilt binary from llvm
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -

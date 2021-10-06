@@ -1,25 +1,22 @@
-FROM matterlabs/llvm_runner:latest
-RUN apt-get update && apt-get install -y openssh-client git sudo 
+FROM matterlabs/llvm_runner:latest as builder 
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
-
 RUN mkdir -p /home/docker/.ssh
 COPY id_rsa /home/docker/.ssh/id_rsa
 RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /home/docker/.ssh/config
 RUN chown -R docker:docker /home/docker/.ssh
+RUN chown -R docker:docker /usr/local/cargo
+
 USER docker 
+
 WORKDIR /home/docker/
 
 RUN git clone --depth 1 --branch deniallugo_change_clang  git@github.com:matter-labs/compiler-llvm.git        
 
+WORKDIR ./compiler-llvm
+
 ENV DIRECTORY_SUFFIX='release'
 ENV BUILD_TYPE='Release'
 ENV LLVM_VERSION=13
-
-user root
-
-RUN apt install build-essential -y
-WORKDIR ./compiler-llvm
-
 RUN cmake \
             -S 'llvm' \
             -B "../build-${DIRECTORY_SUFFIX}/" \
@@ -38,3 +35,33 @@ RUN cmake \
             -DLLVM_ENABLE_SPHINX='Off' \
             -DLLVM_ENABLE_OCAMLDOC='Off' \
             -DLLVM_ENABLE_BINDINGS='Off'
+
+WORKDIR  ../build-${DIRECTORY_SUFFIX}/
+RUN make -j 8
+RUN make install
+
+WORKDIR /home/docker/
+
+
+RUN git clone --depth 1 --branch main git@github.com:matter-labs/compiler-yul.git
+
+WORKDIR compiler-yul
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+
+RUN ./run.sh
+
+FROM debian:buster-slim
+
+RUN apt-get --yes update
+RUN apt-get install --yes software-properties-common ca-certificates gnupg
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 1C52189C923F6CA9
+
+
+RUN add-apt-repository ppa:ethereum/ethereum
+RUN apt-get --yes update
+RUN apt-get install solc
+
+COPY --from=builder /home/docker/compiler-yul/target/release/yulc /usr/local/bin/
+COPY compile.sh .
+CMD ["./compile.sh"]
+
