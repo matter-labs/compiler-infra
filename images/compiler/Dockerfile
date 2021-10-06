@@ -38,7 +38,7 @@ RUN cmake \
             -DLLVM_ENABLE_BINDINGS='Off'
 
 WORKDIR  ../build-${DIRECTORY_SUFFIX}/
-RUN make -j 8
+RUN make -j "$(nproc)"
 RUN make install
 
 WORKDIR /home/docker/
