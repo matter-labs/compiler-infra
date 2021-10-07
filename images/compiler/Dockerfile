@@ -35,11 +35,10 @@ RUN cmake \
             -DLLVM_ENABLE_DOXYGEN='Off' \
             -DLLVM_ENABLE_SPHINX='Off' \
             -DLLVM_ENABLE_OCAMLDOC='Off' \
-            -DLLVM_ENABLE_BINDINGS='Off'
-
-WORKDIR  ../build-${DIRECTORY_SUFFIX}/
-RUN make -j "$(nproc)"
-RUN make install
+            -DLLVM_ENABLE_BINDINGS='Off' \
+            && cd ../build-${DIRECTORY_SUFFIX}/ \
+            && make -j "$(nproc)" \
+            && make install
 
 WORKDIR /home/docker/
 
