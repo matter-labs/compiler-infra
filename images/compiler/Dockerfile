@@ -11,7 +11,7 @@ USER docker
 
 WORKDIR /home/docker/
 
-RUN git clone --depth 1 --branch deniallugo_change_clang  git@github.com:matter-labs/compiler-llvm.git        
+RUN git clone --depth 1 --branch main git@github.com:matter-labs/compiler-llvm.git        
 
 WORKDIR ./compiler-llvm
 
