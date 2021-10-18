@@ -46,7 +46,6 @@ WORKDIR /home/docker/
 RUN git clone --depth 1 --branch main git@github.com:matter-labs/compiler-yul.git
 
 WORKDIR compiler-yul
-ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 
 RUN ./run.sh
 

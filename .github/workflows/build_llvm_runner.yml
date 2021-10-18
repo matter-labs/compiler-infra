@@ -5,11 +5,11 @@ on:
     branches:
       - 'main'
     paths:
-      - 'images/llvm_runner'
+      - 'images/llvm_runner/Dockerfile'
       - '.github/workflows/build_llvm_runner.yml'
   pull_request:
     paths:
-      - 'images/llvm_runner'
+      - 'images/llvm_runner/Dockerfile'
       - '.github/workflows/build_llvm_runner.yml'
 
 jobs:

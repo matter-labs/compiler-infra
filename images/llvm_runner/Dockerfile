@@ -2,7 +2,6 @@ FROM debian:buster-slim
 
 WORKDIR /usr/src/zksync
 
-# Install required dependencies
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
         bash git openssl curl libssl-dev sudo ssh-client \
@@ -14,20 +13,22 @@ RUN apt-get update && \
         libncurses5 xz-utils wget gnupg && \
     rm -rf /var/lib/apt/lists/* 
 
-# Install Rust and required cargo packages
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
+    CARGO_NET_GIT_FETCH_WITH_CLI=true \
     PATH=/usr/local/cargo/bin:$PATH
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 
-
-#Getting prebuilt binary from llvm
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-RUN apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-13 main"
-RUN apt-get --yes update
-RUN apt-get --yes install cmake clang-13 lld-13
-
+RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && \
+    apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-13 main" && \
+    apt-get --yes update && \
+    apt-get --yes install cmake clang-13 lld-13
 ENV PATH=/usr/local/clang_13/bin:$PATH \
-    D_LIBRARY_PATH=/usr/local/clang_13/lib:$LD_LIBRARY_PATH’
+    D_LIBRARY_PATH=/usr/local/clang_13/lib:$LD_LIBRARY_PATH
+
+# Folder and env variable for downloading the solidity compiler binaries in runtime
+RUN mkdir -pv /usr/local/solc
+ENV SOLIDITY_COMP_BIN_PATH=/usr/local/solc \
+    PATH=/usr/local/solc:$PATH
 
 CMD [ “tail -f /dev/null” ]
