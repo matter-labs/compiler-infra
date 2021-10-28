@@ -1,13 +1,20 @@
-name: Test of build LLVM_runner image
+name: Publish LLVM_runner docker image
 
 on:
   pull_request:
+    branches:
+      - main
+    types: [closed]
     paths:
       - 'images/llvm_runner/Dockerfile'
       - '.github/workflows/build_llvm_runner.yml'
+  workflow_dispatch:
+    branches:
+      - 'main'
 
 jobs:
   push_to_registry:
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     name: Push Docker image to Docker Hub
     runs-on: [self-hosted, CI-worker]    
     steps:
@@ -16,10 +23,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1.10.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v2.7.0
         with:
-          push: false
+          push: true
           tags: "matterlabs/llvm_runner:latest"
           file: images/llvm_runner/Dockerfile
           no-cache: true

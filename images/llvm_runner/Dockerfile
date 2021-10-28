@@ -24,11 +24,6 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - &&
     apt-get --yes update && \
     apt-get --yes install cmake clang-13 lld-13
 ENV PATH=/usr/local/clang_13/bin:$PATH \
-    D_LIBRARY_PATH=/usr/local/clang_13/lib:$LD_LIBRARY_PATH
-
-# Folder and env variable for downloading the solidity compiler binaries in runtime
-RUN mkdir -pv /usr/local/solc
-ENV SOLIDITY_COMP_BIN_PATH=/usr/local/solc \
-    PATH=/usr/local/solc:$PATH
-
-CMD [ “tail -f /dev/null” ]
+    D_LIBRARY_PATH=/usr/local/clang_13/lib:$LD_LIBRARY_PATH \
+    LLVM_VERSION=13 \
+    CI_RUNNING=true
