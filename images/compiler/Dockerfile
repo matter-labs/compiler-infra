@@ -11,34 +11,9 @@ USER docker
 
 WORKDIR /home/docker/
 
-RUN git clone --depth 1 --branch main git@github.com:matter-labs/compiler-llvm.git        
-
-WORKDIR ./compiler-llvm
-
-ENV DIRECTORY_SUFFIX='release'
-ENV BUILD_TYPE='Release'
-ENV LLVM_VERSION=13
-RUN cmake \
-            -S 'llvm' \
-            -B "../build-${DIRECTORY_SUFFIX}/" \
-            -G 'Unix Makefiles' \
-            -DCMAKE_INSTALL_PREFIX="${HOME}/opt/llvm-${DIRECTORY_SUFFIX}/" \
-            -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-            -DCMAKE_C_COMPILER="clang-${LLVM_VERSION}" \
-            -DCMAKE_CXX_COMPILER="clang++-${LLVM_VERSION}" \
-            -DLLVM_TARGETS_TO_BUILD='X86' \
-            -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='SyncVM' \
-            -DLLVM_OPTIMIZED_TABLEGEN='On' \
-            -DLLVM_USE_LINKER="lld-${LLVM_VERSION}" \
-            -DLLVM_BUILD_DOCS='Off' \
-            -DLLVM_INCLUDE_DOCS='Off' \
-            -DLLVM_ENABLE_DOXYGEN='Off' \
-            -DLLVM_ENABLE_SPHINX='Off' \
-            -DLLVM_ENABLE_OCAMLDOC='Off' \
-            -DLLVM_ENABLE_BINDINGS='Off' \
-            && cd ../build-${DIRECTORY_SUFFIX}/ \
-            && make -j "$(nproc)" \
-            && make install
+RUN git clone --depth 1 --branch main git@github.com:matter-labs/compiler-llvm.git \
+    && cd compiler-llvm \
+    && ./build.sh release
 
 WORKDIR /home/docker/
 
@@ -63,4 +38,3 @@ RUN apt-get install solc
 COPY --from=builder /home/docker/compiler-yul/target/release/yulc /usr/local/bin/
 COPY compile.sh .
 CMD ["./compile.sh"]
-
