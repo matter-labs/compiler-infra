@@ -54,7 +54,7 @@ RUN git clone --depth 1 --branch main git@github.com:matter-labs/compiler-solidi
     && ./run.sh info release
 
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 COPY --from=builder /home/docker/compiler-solidity/target/release/zksolc /usr/local/bin/
 COPY --from=builder /home/docker/solc /usr/local/bin/

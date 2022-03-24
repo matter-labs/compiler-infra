@@ -24,7 +24,7 @@ WORKDIR compiler-yul
 
 RUN ./run.sh
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN apt-get --yes update
 RUN apt-get install --yes software-properties-common ca-certificates gnupg
