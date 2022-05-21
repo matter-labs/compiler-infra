@@ -5,6 +5,10 @@ on:
     branches:
       - 'main'
 
+  workflow_run:
+    workflows: [Publish LLVM_runner docker image]
+    types: [completed]
+
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -23,7 +27,7 @@ jobs:
         run: |
           cd images/compiler-beta
           echo "$SSH_KEY" > key.ssh
-          DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --secret id=ssh_key,src=key.ssh -t matterlabs/zksolc . 
+          DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --secret id=ssh_key,src=key.ssh -t matterlabs/zksolc .
           docker push matterlabs/zksolc:latest
         env:
           SSH_KEY: ${{secrets.SSH_KEY}}

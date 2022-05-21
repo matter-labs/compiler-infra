@@ -5,6 +5,10 @@ on:
     branches:
       - 'main'
 
+  workflow_run:
+    workflows: [Publish LLVM_runner docker image]
+    types: [completed]
+
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
