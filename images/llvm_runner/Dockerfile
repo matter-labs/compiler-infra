@@ -20,7 +20,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && \
-    apt-add-repository "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-13 main" && \
+    apt-add-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main" && \
     apt-get --yes update && \
     apt-get --yes install cmake clang-13 lld-13
 ENV PATH=/usr/local/clang_13/bin:$PATH \
