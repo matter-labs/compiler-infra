@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM ubuntu:20.04
 
 WORKDIR /usr/src/zksync
 
@@ -11,7 +11,7 @@ RUN apt-get update && \
         openssh-client git \
         build-essential \
         libncurses5 xz-utils wget gnupg && \
-    rm -rf /var/lib/apt/lists/* 
+    rm -rf /var/lib/apt/lists/*
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \

@@ -1,4 +1,4 @@
-FROM matterlabs/llvm_runner:latest as builder 
+FROM matterlabs/llvm_runner:latest as builder
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 RUN mkdir -p /home/docker/.ssh
 RUN --mount=type=secret,id=ssh_key cp /run/secrets/ssh_key /home/docker/.ssh/id_rsa 
@@ -7,7 +7,7 @@ RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /home/docker/.ssh/co
 RUN chown -R docker:docker /home/docker/.ssh
 RUN chown -R docker:docker /usr/local/cargo
 
-USER docker 
+USER docker
 
 WORKDIR /home/docker/
 
@@ -54,7 +54,7 @@ RUN git clone --depth 1 --branch main git@github.com:matter-labs/compiler-solidi
     && ./run.sh info release
 
 
-FROM debian:bullseye-slim
+FROM ubuntu:20.04
 
 COPY --from=builder /home/docker/compiler-solidity/target/release/zksolc /usr/local/bin/
 COPY --from=builder /home/docker/solc /usr/local/bin/
