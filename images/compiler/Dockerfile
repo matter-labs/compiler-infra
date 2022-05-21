@@ -1,13 +1,13 @@
-FROM matterlabs/llvm_runner:latest as builder 
+FROM matterlabs/llvm_runner:latest as builder
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 RUN mkdir -p /home/docker/.ssh
-RUN --mount=type=secret,id=ssh_key cp /run/secrets/ssh_key /home/docker/.ssh/id_rsa 
+RUN --mount=type=secret,id=ssh_key cp /run/secrets/ssh_key /home/docker/.ssh/id_rsa
 
 RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /home/docker/.ssh/config
 RUN chown -R docker:docker /home/docker/.ssh
 RUN chown -R docker:docker /usr/local/cargo
 
-USER docker 
+USER docker
 
 WORKDIR /home/docker/
 
@@ -24,7 +24,9 @@ WORKDIR compiler-yul
 
 RUN ./run.sh
 
-FROM debian:bullseye-slim
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get --yes update
 RUN apt-get install --yes software-properties-common ca-certificates gnupg
