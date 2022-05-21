@@ -9,10 +9,10 @@ on:
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
-    runs-on: [self-hosted, CI-worker]    
+    runs-on: [self-hosted, compiler]
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
