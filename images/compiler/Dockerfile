@@ -29,10 +29,9 @@ FROM ubuntu:20.04 as runner
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 1C52189C923F6CA9 && \
-    add-apt-repository ppa:deadsnakes/ppa && add-apt-repository ppa:ethereum/ethereum && \
+    add-apt-repository ppa:ethereum/ethereum && \
     apt-get update && \
-    apt-get install --yes software-properties-common ca-certificates gnupg && \
-    apt-get install --yes solc python3.9 python3.9-dev python3.9-distutils
+    apt-get install --yes software-properties-common ca-certificates gnupg solc
 
 COPY --from=builder /home/docker/compiler-yul/target/release/yulc /usr/local/bin/
 COPY compile.sh .
