@@ -24,14 +24,17 @@ WORKDIR compiler-yul
 
 RUN ./run.sh
 
-FROM ubuntu:20.04 as runner
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 1C52189C923F6CA9 && \
-    add-apt-repository ppa:ethereum/ethereum && \
-    apt-get update && \
-    apt-get install --yes software-properties-common ca-certificates gnupg solc
+RUN apt-get --yes update
+RUN apt-get install --yes software-properties-common ca-certificates gnupg
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 1C52189C923F6CA9
+
+RUN add-apt-repository ppa:ethereum/ethereum
+RUN apt-get --yes update
+RUN apt-get --yes install solc
 
 COPY --from=builder /home/docker/compiler-yul/target/release/yulc /usr/local/bin/
 COPY compile.sh .
