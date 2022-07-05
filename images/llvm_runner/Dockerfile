@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM debian:buster-slim
 
 WORKDIR /usr/src/zksync
 
@@ -22,13 +22,11 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && \
-    apt-add-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main" && \
+    apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-13 main" && \
     apt-get --yes update && \
     apt-get --yes install cmake clang-13 lld-13
 
-RUN add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && \
-    apt-get --yes install python3.9 python3.9-dev python3.9-distutils
+RUN apt-get --yes install python3 python3-dev python3-distutils
 
 ENV PATH=/usr/local/clang_13/bin:$PATH \
     D_LIBRARY_PATH=/usr/local/clang_13/lib:$LD_LIBRARY_PATH \
