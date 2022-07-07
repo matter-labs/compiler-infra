@@ -49,12 +49,11 @@ RUN cmake \
 
 # Download zksolc and build it.
 WORKDIR /home/docker/
-RUN git clone --depth 1 --branch az/vm-v1.1 git@github.com:matter-labs/compiler-solidity.git \
+RUN git clone --depth 1 --branch vm1.1 git@github.com:matter-labs/compiler-solidity.git \
     && cd compiler-solidity \
-    && ./run.sh info release
+    && cargo build --verbose --release
 
-
-FROM ubuntu:20.04
+FROM debian:buster-slim
 
 COPY --from=builder /home/docker/compiler-solidity/target/release/zksolc /usr/local/bin/
 COPY --from=builder /home/docker/solc /usr/local/bin/
