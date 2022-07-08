@@ -24,7 +24,7 @@ RUN git clone --depth 1 --branch vm1.1 git@github.com:matter-labs/compiler-vyper
     && cargo run --release --bin llvm-builder \
     && cargo build --release
 
-FROM debian:buster-slim
+FROM ubuntu:20.04
 
 COPY --from=builder /home/docker/compiler-vyper/target/release/zkvyper /usr/local/bin/
 COPY --from=builder /home/docker/vyper /usr/local/bin/
