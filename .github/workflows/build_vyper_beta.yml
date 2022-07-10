@@ -1,4 +1,4 @@
-name: Publish compiler docker image (v1.1.0) for beta testnet
+name: Publish Vyper compiler docker image for beta testnet
 
 on:
   workflow_dispatch:
@@ -26,9 +26,9 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          cd images/compiler-beta-v1.1.0
+          cd images/vyper-beta
           echo "$SSH_KEY" > key.ssh
-          DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --secret id=ssh_key,src=key.ssh -t matterlabs/zksolc:v1.1.0 .
-          docker push matterlabs/zksolc:v1.1.0
+          DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --secret id=ssh_key,src=key.ssh -t matterlabs/zkvyper .
+          docker push matterlabs/zkvyper:latest
         env:
           SSH_KEY: ${{secrets.SSH_KEY}}

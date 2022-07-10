@@ -17,7 +17,7 @@ RUN wget https://github.com/ethereum/solc-bin/raw/gh-pages/linux-amd64/solc-linu
     && chmod +x solc
 
 # Download LLVM and build it.
-RUN git clone --depth 1 --branch dev-1.1 git@github.com:matter-labs/compiler-llvm.git
+RUN git clone --depth 1 --branch v1.1.0 git@github.com:matter-labs/compiler-llvm.git
 
 # TODO: We can't use `./build.sh release`, since it has `sudo` command which fails.
 #       Currently it's a copy-paste from `./build.sh` with `sudo make install` replaced by `make install`.
@@ -49,10 +49,10 @@ RUN cmake \
 
 # Download zksolc and build it.
 WORKDIR /home/docker/
-RUN git clone --depth 1 --branch az/vm-v1.1 git@github.com:matter-labs/compiler-solidity.git \
+
+RUN git clone --depth 1 --branch v1.1.0 git@github.com:matter-labs/compiler-solidity.git \
     && cd compiler-solidity \
     && ./run.sh info release
-
 
 FROM ubuntu:20.04
 
