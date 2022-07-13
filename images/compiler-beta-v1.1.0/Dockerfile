@@ -11,9 +11,9 @@ USER docker
 
 WORKDIR /home/docker/
 
-# Obtain `solc` 0.8.12.
-RUN wget https://github.com/ethereum/solc-bin/raw/gh-pages/linux-amd64/solc-linux-amd64-v0.8.12%2Bcommit.f00d7308 \
-    && mv solc-linux-amd64-v0.8.12+commit.f00d7308 solc \
+# Obtain `solc` 0.8.15.
+RUN wget https://github.com/ethereum/solidity/releases/download/v0.8.15/solc-static-linux \
+    && mv solc-static-linux solc \
     && chmod +x solc
 
 # Download LLVM and build it.
