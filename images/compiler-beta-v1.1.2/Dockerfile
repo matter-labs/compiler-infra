@@ -11,21 +11,21 @@ USER docker
 
 WORKDIR /home/docker/
 
-# Obtain `vyper` 0.3.3.
-RUN wget https://github.com/vyperlang/vyper/releases/download/v0.3.3/vyper.0.3.3+commit.48e326f0.linux \
-    && mv vyper.0.3.3+commit.48e326f0.linux vyper \
-    && chmod +x vyper
+# Obtain `solc` 0.8.15.
+RUN wget https://github.com/ethereum/solidity/releases/download/v0.8.15/solc-static-linux \
+    && mv solc-static-linux solc \
+    && chmod +x solc
 
-# Download zkvyper and build it.
 WORKDIR /home/docker/
 
-RUN git clone --depth 1 --branch vm1.1 git@github.com:matter-labs/compiler-vyper.git \
-    && cd compiler-vyper \
+# Download zksolc and build it.
+RUN git clone --branch v1.1.2 git@github.com:matter-labs/compiler-solidity.git \
+    && cd compiler-solidity \
     && cargo run --release --bin llvm-builder \
     && cargo build --release
 
 FROM ubuntu:20.04
 
-COPY --from=builder /home/docker/compiler-vyper/target/release/zkvyper /usr/local/bin/
-COPY --from=builder /home/docker/vyper /usr/local/bin/
-CMD ["zkvyper"]
+COPY --from=builder /home/docker/compiler-solidity/target/release/zksolc /usr/local/bin/
+COPY --from=builder /home/docker/solc /usr/local/bin/
+CMD ["zksolc"]
