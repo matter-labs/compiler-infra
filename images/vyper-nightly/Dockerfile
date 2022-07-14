@@ -19,7 +19,8 @@ RUN wget https://github.com/vyperlang/vyper/releases/download/v0.3.3/vyper.0.3.3
 WORKDIR /home/docker/
 
 # Download zkvyper and build it.
-RUN git clone --branch vm1.1 git@github.com:matter-labs/compiler-vyper.git \
+RUN git config --global url."ssh://git@github.com/".insteadOf https://github.com/ \
+    && git clone --branch vm1.1 git@github.com:matter-labs/compiler-vyper.git \
     && cd compiler-vyper \
     && cargo run --release --bin llvm-builder \
     && cargo build --release
