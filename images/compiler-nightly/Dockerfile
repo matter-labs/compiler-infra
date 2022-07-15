@@ -19,7 +19,8 @@ RUN wget https://github.com/ethereum/solidity/releases/download/v0.8.15/solc-sta
 WORKDIR /home/docker/
 
 # Download zksolc and build it.
-RUN git clone --branch vm1.1 git@github.com:matter-labs/compiler-solidity.git \
+RUN git config --global url."ssh://git@github.com/".insteadOf https://github.com/ \
+    && git clone --branch vm1.1 git@github.com:matter-labs/compiler-solidity.git \
     && cd compiler-solidity \
     && cargo run --release --bin llvm-builder \
     && cargo build --release
