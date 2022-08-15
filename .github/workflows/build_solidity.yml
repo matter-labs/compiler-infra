@@ -1,4 +1,4 @@
-name: Publish zksolc v1.1.4 docker image
+name: Publish zksolc docker image
 
 on:
   workflow_dispatch:
