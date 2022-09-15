@@ -25,14 +25,13 @@ WORKDIR /home/docker/
 # Download `zksolc` and build it.
 RUN git config --global url."ssh://git@github.com/".insteadOf https://github.com/ \
     && git clone --branch $ZKSOLC_REF git@github.com:matter-labs/compiler-solidity.git \
-    && cd compiler-solidity
-
-RUN if [[ -z "$LLVM_REF" ]] ; \
+    && cd compiler-solidity \
+    && if [[ -z "$LLVM_REF" ]] ; \
     then \ 
         cargo run --release --bin llvm-builder \
         && cargo build --release ; \
     else \
-        cargo run --release --bin llvm-builder --tag $LLVM_REF \
+        cargo run --release --bin llvm-builder -- --tag $LLVM_REF \
         && cargo build --release  ; \ 
     fi
 
