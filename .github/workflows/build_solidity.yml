@@ -8,7 +8,7 @@ on:
         description: "Version of the `solc` compiler to build the image with, e.g. 'v0.8.16'"
         type: string
         required: true
-      zksolc_branch:
+      zksolc_ref:
         description: "Reference of the `compiler-solidity` repo to pull into the image, e.g. 'v1.1.6'"
         type: string
         required: true
@@ -42,8 +42,8 @@ jobs:
           echo "$SSH_KEY" > key.ssh
           DOCKER_BUILDKIT=1 docker build \
             --build-arg SOLC_VERSION=${{ inputs.solc_version }} \
-            --build-arg ZKSOLC_BRANCH=${{ inputs.zksolc_branch }} \
-            --build-arg LLVM_REF=${{ inputs.zksolc_branch }} \
+            --build-arg ZKSOLC_REF=${{ inputs.zksolc_ref }} \
+            --build-arg LLVM_REF=${{ inputs.llvm_ref }} \
             --no-cache --progress=plain --secret id=ssh_key,src=key.ssh -t matterlabs/zksolc:${{ inputs.docker_tag }} .
           docker push matterlabs/zksolc:${{ inputs.docker_tag }}
         env:
