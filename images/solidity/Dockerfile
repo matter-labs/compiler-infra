@@ -28,12 +28,12 @@ RUN git config --global url."ssh://git@github.com/".insteadOf https://github.com
     && cd compiler-solidity \
     && if [[ -z "$LLVM_REF" ]] ; \
     then \ 
-        cargo run --release --bin llvm-builder \
-        && cargo build --release ; \
+        cargo run --release --bin llvm-builder ; \
     else \
-        cargo run --release --bin llvm-builder -- --tag $LLVM_REF \
-        && cargo build --release  ; \ 
-    fi
+        cargo run --release --bin llvm-builder -- --tag $LLVM_REF ; \
+    fi \
+    && cargo build --release 
+
 
 FROM ubuntu:20.04
 
