@@ -12,7 +12,8 @@ USER docker
 WORKDIR /home/docker/
 
 ARG SOLC_VERSION
-ARG ZKSOLC_BRANCH
+ARG ZKSOLC_REF
+ARG LLVM_REF
 
 # Obtain `solc`.
 RUN wget https://github.com/ethereum/solidity/releases/download/$SOLC_VERSION/solc-static-linux \
@@ -23,10 +24,16 @@ WORKDIR /home/docker/
 
 # Download `zksolc` and build it.
 RUN git config --global url."ssh://git@github.com/".insteadOf https://github.com/ \
-    && git clone --branch $ZKSOLC_BRANCH git@github.com:matter-labs/compiler-solidity.git \
+    && git clone --branch $ZKSOLC_REF git@github.com:matter-labs/compiler-solidity.git \
     && cd compiler-solidity \
-    && cargo run --release --bin llvm-builder \
-    && cargo build --release
+    && if [[ -z "$LLVM_REF" ]] ; \
+    then \ 
+        cargo run --release --bin llvm-builder ; \
+    else \
+        cargo run --release --bin llvm-builder -- --tag $LLVM_REF ; \
+    fi \
+    && cargo build --release 
+
 
 FROM ubuntu:20.04
 
