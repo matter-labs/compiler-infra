@@ -32,8 +32,8 @@ jobs:
         run: |
           cd images/solidity
           gh release -R github.com/matter-labs/compiler-solidity download ${{ inputs.zksol_prerelease_ref }} \
-          -p '*linux-amd64*' -O ./zksolc
-          chmod +x ./zksolc
+          -p '*linux-amd64*'
+          chmod +x ./zksolc-linux-amd64-musl
           DOCKER_BUILDKIT=1 docker build \
             --no-cache --progress=plain -t matterlabs/zksolc:${{ inputs.docker_tag }} .
           docker push matterlabs/zksolc:${{ inputs.docker_tag }}

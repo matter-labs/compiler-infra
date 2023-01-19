@@ -37,8 +37,8 @@ jobs:
         run: |
           cd images/vyper
           gh release -R github.com/matter-labs/compiler-vyper download ${{ inputs.zkvyper_prerelease_ref }} \
-          -p '*linux-amd64*' -O ./zkvyper
-          chmod +x ./zkvyper
+          -p '*linux-amd64*' -O ./zkvyper-linux-amd64-musl
+          chmod +x ./zkvyper-linux-amd64-musl
           DOCKER_BUILDKIT=1 docker build \
             --no-cache --progress=plain -t matterlabs/zkvyper:${{ inputs.docker_tag }} .
           docker push matterlabs/zkvyper:${{ inputs.docker_tag }}

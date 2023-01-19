@@ -8,6 +8,6 @@ RUN wget https://github.com/ethereum/solidity/releases/download/$SOLC_VERSION/so
 
 FROM ubuntu:20.04
 
-COPY ./zksolc /usr/local/bin/
+COPY ./zksolc-linux-amd64-musl /usr/local/bin/zksolc
 COPY --from=builder /home/docker/solc /usr/local/bin/
 CMD ["zksolc"]
