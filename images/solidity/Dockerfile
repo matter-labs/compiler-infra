@@ -1,42 +1,13 @@
 FROM matterlabs/llvm_runner:latest as builder
-RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
-RUN mkdir -p /home/docker/.ssh
-RUN --mount=type=secret,id=ssh_key cp /run/secrets/ssh_key /home/docker/.ssh/id_rsa 
-
-RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /home/docker/.ssh/config
-RUN chown -R docker:docker /home/docker/.ssh
-RUN chown -R docker:docker /usr/local/cargo
-
-USER docker
-
 WORKDIR /home/docker/
-
-ARG SOLC_VERSION
-ARG ZKSOLC_REF
-ARG LLVM_REF
 
 # Obtain `solc`.
 RUN wget https://github.com/ethereum/solidity/releases/download/$SOLC_VERSION/solc-static-linux \
     && mv solc-static-linux solc \
     && chmod +x solc
 
-WORKDIR /home/docker/
-
-# Download `zksolc` and build it.
-RUN git config --global url."ssh://git@github.com/".insteadOf https://github.com/ \
-    && git clone --branch $ZKSOLC_REF git@github.com:matter-labs/compiler-solidity.git \
-    && cd compiler-solidity \
-    && if [[ -z "$LLVM_REF" ]] ; \
-    then \ 
-        cargo run --release --bin llvm-builder ; \
-    else \
-        cargo run --release --bin llvm-builder -- --tag $LLVM_REF ; \
-    fi \
-    && cargo build --release 
-
-
 FROM ubuntu:20.04
 
-COPY --from=builder /home/docker/compiler-solidity/target/release/zksolc /usr/local/bin/
+COPY ./zksolc /usr/local/bin/
 COPY --from=builder /home/docker/solc /usr/local/bin/
 CMD ["zksolc"]

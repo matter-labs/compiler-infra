@@ -1,18 +1,23 @@
-name: Publish zksolc docker image
+name: Publish zkvyper docker image
 
 on:
   workflow_dispatch:
-    branches: [main]
+    branches:
+      - "main"
     inputs:
-      zksol_prerelease_ref:
-        description: "Version of the `solc` compiler to build the image with, e.g. 'v0.8.16'"
+      zkvyper_prerelease_ref:
+        description: "Version of the `vyper` compiler to build the image with, e.g. 'v0.8.16'"
         type: string
         required: true
-      docker_tag: 
+      docker_tag:
         description: "Docker tag to push the image to, e.g. 'latest'"
         type: string
         required: false
         default: latest
+  workflow_run:
+    workflows: [Publish LLVM_runner docker image]
+    types: [completed]
+    branches: [main]
 
 jobs:
   push_to_registry:
@@ -30,12 +35,12 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          cd images/solidity
-          gh release -R github.com/matter-labs/compiler-solidity download ${{ inputs.zksol_prerelease_ref }} \
-          -p '*linux-amd64*' -O ./zksolc
-          chmod +x ./zksolc
+          cd images/vyper
+          gh release -R github.com/matter-labs/compiler-vyper download ${{ inputs.zkvyper_prerelease_ref }} \
+          -p '*linux-amd64*' -O ./zkvyper
+          chmod +x ./zkvyper
           DOCKER_BUILDKIT=1 docker build \
-            --no-cache --progress=plain -t matterlabs/zksolc:${{ inputs.docker_tag }} .
-          docker push matterlabs/zksolc:${{ inputs.docker_tag }}
+            --no-cache --progress=plain -t matterlabs/zkvyper:${{ inputs.docker_tag }} .
+          docker push matterlabs/zkvyper:${{ inputs.docker_tag }}
         env:
           GH_TOKEN: ${{ secrets.ZKSYNC_ADMIN_BOT_ORG_REPO_WRITE }}
