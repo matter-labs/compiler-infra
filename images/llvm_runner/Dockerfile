@@ -12,11 +12,7 @@ RUN apt-get update && \
         software-properties-common jq \
         openssh-client git \
         build-essential \
-        libncurses5 xz-utils wget gnupg  \
-        libboost-dev libboost-filesystem-dev \
-        libboost-test-dev libboost-system-dev \
-        libboost-program-options-dev \
-        libcvc4-dev libcln-dev && \
+        libncurses5 xz-utils wget gnupg && \
     rm -rf /var/lib/apt/lists/*
 
 ENV RUSTUP_HOME=/usr/local/rustup \
@@ -33,6 +29,16 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - &&
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \
     apt-get --yes install python3.9 python3.9-dev python3.9-distutils
+
+#Required for build solidity
+RUN apt-get update && apt-get -y install -y \
+    libboost-dev \
+    libboost-filesystem-dev \
+    libboost-test-dev \
+    libboost-system-dev \
+    libboost-program-options-dev \
+    libcvc4-dev \
+    libcln-dev
 
 ENV PATH=/usr/lib/llvm-13/bin:$PATH \
     LD_LIBRARY_PATH=/usr/lib/llvm-13/lib:$LD_LIBRARY_PATH \
