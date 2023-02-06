@@ -38,7 +38,8 @@ RUN apt-get update && apt-get -y install -y \
     libboost-system-dev \
     libboost-program-options-dev \
     libcvc4-dev \
-    libcln-dev
+    libcln-dev \
+    musl-tools
 
 ENV PATH=/usr/lib/llvm-13/bin:$PATH \
     LD_LIBRARY_PATH=/usr/lib/llvm-13/lib:$LD_LIBRARY_PATH \
