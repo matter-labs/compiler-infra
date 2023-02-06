@@ -30,6 +30,16 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \
     apt-get --yes install python3.9 python3.9-dev python3.9-distutils
 
+# Required to build solidity fork
+RUN apt-get update && apt-get -y install -y \
+    libboost-dev \
+    libboost-filesystem-dev \
+    libboost-test-dev \
+    libboost-system-dev \
+    libboost-program-options-dev \
+    libcvc4-dev \
+    libcln-dev
+
 ENV PATH=/usr/lib/llvm-13/bin:$PATH \
     LD_LIBRARY_PATH=/usr/lib/llvm-13/lib:$LD_LIBRARY_PATH \
     LLVM_VERSION=13 \
