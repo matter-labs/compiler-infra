@@ -30,7 +30,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \
     apt-get --yes install python3.9 python3.9-dev python3.9-distutils
 
-#Required for build solidity
+# Required to build solidity fork
 RUN apt-get update && apt-get -y install -y \
     libboost-dev \
     libboost-filesystem-dev \
