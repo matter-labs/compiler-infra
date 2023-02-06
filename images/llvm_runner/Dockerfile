@@ -12,7 +12,11 @@ RUN apt-get update && \
         software-properties-common jq \
         openssh-client git \
         build-essential \
-        libncurses5 xz-utils wget gnupg && \
+        libncurses5 xz-utils wget gnupg  \
+        libboost-dev libboost-filesystem-dev \
+        libboost-test-dev libboost-system-dev \
+        libboost-program-options-dev \
+        libcvc4-dev libcln-dev && \
     rm -rf /var/lib/apt/lists/*
 
 ENV RUSTUP_HOME=/usr/local/rustup \
