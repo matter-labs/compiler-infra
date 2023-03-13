@@ -6,13 +6,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
-        bash git openssl curl libssl-dev sudo ssh-client \
-        cmake gcc g++ ninja-build \
-        libpq-dev pkg-config \
-        software-properties-common jq \
-        openssh-client git \
-        build-essential \
-        libncurses5 xz-utils wget gnupg musl-tools && \
+    bash git openssl curl libssl-dev sudo ssh-client \
+    cmake gcc g++ ninja-build \
+    libpq-dev pkg-config \
+    software-properties-common jq \
+    openssh-client git \
+    build-essential \
+    libncurses5 xz-utils wget gnupg musl-tools && \
     rm -rf /var/lib/apt/lists/*
 
 ENV RUSTUP_HOME=/usr/local/rustup \
@@ -38,7 +38,8 @@ RUN apt-get update && apt-get -y install -y \
     libboost-system-dev \
     libboost-program-options-dev \
     libcvc4-dev \
-    libcln-dev
+    libcln-dev \
+    libboost-regex-dev
 
 ENV PATH=/usr/lib/llvm-13/bin:$PATH \
     LD_LIBRARY_PATH=/usr/lib/llvm-13/lib:$LD_LIBRARY_PATH \
