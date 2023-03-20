@@ -33,12 +33,23 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image on merged PR
+        if: github.event.pull_request.merged == true
         uses: docker/build-push-action@v3
         with:
           push: true
           tags: |
             matterlabs/llvm_runner:${{ steps.vars.outputs.sha_short }}
             matterlabs/llvm_runner:latest
+          file: images/llvm_runner/Dockerfile
+          no-cache: true
+
+      - name: Build and push Docker image on manual trigger
+        if: github.event_name == 'workflow_dispatch'
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: |
+            matterlabs/llvm_runner:${{ steps.vars.outputs.sha_short }}
           file: images/llvm_runner/Dockerfile
           no-cache: true
