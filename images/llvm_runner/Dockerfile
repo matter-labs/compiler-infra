@@ -32,16 +32,9 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
 
 # Required to build solidity fork
 RUN apt-get update && apt-get -y install -y \
-    #libboost-dev \
-    #libboost-filesystem-dev \
-    #libboost-test-dev \
-    #libboost-system-dev \
-    #libboost-program-options-dev \
     libcvc4-dev \
     libcln-dev
-    #libboost-regex-dev \
-    #libboost-thread-dev \
-    #libboost-random-dev
+
 RUN curl -L -o boost_1_81_0.tar.gz https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz && \
     tar xzf ./boost_1_81_0.tar.gz && \
     cd ./boost_1_81_0 && \
