@@ -35,7 +35,7 @@ jobs:
 
       - name: Build and push Docker image on merged PR
         if: github.event.pull_request.merged == true
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: |
@@ -46,7 +46,7 @@ jobs:
 
       - name: Build and push Docker image on manual trigger
         if: github.event_name == 'workflow_dispatch'
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: |
