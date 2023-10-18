@@ -29,11 +29,11 @@ jobs:
 
       - id: set_output
         run: |
-          if ${{ steps.determine_changes.outputs.llvm_runner }}; then
+          if [ "${{ steps.determine_changes.outputs.llvm_runner_any_changed }}" == "true" ]; then
             echo "::set-output name=image_to_build::llvm_runner"
-          elif ${{ steps.determine_changes.outputs.llvm_runner_jammy }}; then
+          elif [ "${{ steps.determine_changes.outputs.llvm_runner_jammy_any_changed }}" == "true" ]; then
             echo "::set-output name=image_to_build::llvm_runner_jammy"
-          elif ${{ steps.determine_changes.outputs.both }}; then
+          elif [ "${{ steps.determine_changes.outputs.both_any_changed }}" == "true" ]; then
             echo "::set-output name=image_to_build::both"
           else
             echo "::set-output name=image_to_build::none"
