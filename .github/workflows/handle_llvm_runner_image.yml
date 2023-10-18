@@ -30,13 +30,13 @@ jobs:
       - id: set_output
         run: |
           if [ "${{ steps.determine_changes.outputs.llvm_runner_any_changed }}" == "true" ]; then
-            echo "::set-output name=image_to_build::llvm_runner"
+            echo "image_to_build=llvm_runner" >> $GITHUB_OUTPUT
           elif [ "${{ steps.determine_changes.outputs.llvm_runner_jammy_any_changed }}" == "true" ]; then
-            echo "::set-output name=image_to_build::llvm_runner_jammy"
+            echo "image_to_build=llvm_runner_jammy" >> $GITHUB_OUTPUT
           elif [ "${{ steps.determine_changes.outputs.both_any_changed }}" == "true" ]; then
-            echo "::set-output name=image_to_build::both"
+            echo "image_to_build=both" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=image_to_build::none"
+            echo "image_to_build=none" >> $GITHUB_OUTPUT
           fi
 
   handle_image:
