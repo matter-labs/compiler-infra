@@ -16,6 +16,8 @@ jobs:
     outputs:
       image_to_build: ${{ steps.determine_changes.outputs.image_to_build }}
     steps:
+      - uses: actions/checkout@v4
+
       - id: determine_changes
         uses: tj-actions/changed-files@v39
         with:
@@ -70,7 +72,7 @@ jobs:
         with:
           push: ${{ github.event_name == 'push' }}
           tags: |
-            matterlabs/${{ matrix.image_name }}:${{ steps.set_output.outputs.sha_short }}
+            matterlabs/${{ matrix.image_name }}:${{ steps.set_output  .outputs.sha_short }}
             matterlabs/${{ matrix.image_name }}:latest
           file: images/llvm_runner/${{ matrix.image_name == 'llvm_runner_jammy' && 'jammy.' || '' }}Dockerfile
           platforms: linux/amd64,linux/arm64
