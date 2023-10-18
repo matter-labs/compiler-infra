@@ -11,13 +11,14 @@ on:
 jobs:
   check_changes:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     outputs:
       image_to_build: ${{ steps.determine_changes.outputs.image_to_build }}
     steps:
       - id: determine_changes
         uses: tj-actions/changed-files@v39
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           files_yaml: |
             llvm_runner:
               - "images/llvm_runner/Dockerfile"
