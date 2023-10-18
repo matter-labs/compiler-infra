@@ -30,13 +30,13 @@ jobs:
       - id: set_output
         run: |
           if [ "${{ steps.determine_changes.outputs.llvm_runner_any_changed }}" == "true" ]; then
-            echo "image_to_build=llvm_runner" >> $GITHUB_OUTPUT
+            echo "image_to_build=llvm_runner" >> "$GITHUB_OUTPUT"
           elif [ "${{ steps.determine_changes.outputs.llvm_runner_jammy_any_changed }}" == "true" ]; then
-            echo "image_to_build=llvm_runner_jammy" >> $GITHUB_OUTPUT
+            echo "image_to_build=llvm_runner_jammy" >> "$GITHUB_OUTPUT"
           elif [ "${{ steps.determine_changes.outputs.both_any_changed }}" == "true" ]; then
-            echo "image_to_build=both" >> $GITHUB_OUTPUT
+            echo "image_to_build=both" >> "$GITHUB_OUTPUT"
           else
-            echo "image_to_build=none" >> $GITHUB_OUTPUT
+            echo "image_to_build=none" >> "$GITHUB_OUTPUT"
           fi
 
   handle_image:
@@ -51,8 +51,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set outputs
-        id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        id: set_output
+        run: echo "name=sha_short::$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -70,7 +70,7 @@ jobs:
         with:
           push: ${{ github.event_name == 'push' }}
           tags: |
-            matterlabs/${{ matrix.image_name }}:${{ steps.vars.outputs.sha_short }}
+            matterlabs/${{ matrix.image_name }}:${{ steps.set_output.outputs.sha_short }}
             matterlabs/${{ matrix.image_name }}:latest
           file: images/llvm_runner/${{ matrix.image_name == 'llvm_runner_jammy' && 'jammy.' || '' }}Dockerfile
           platforms: linux/amd64,linux/arm64
