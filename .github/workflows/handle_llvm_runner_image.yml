@@ -59,8 +59,10 @@ jobs:
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
-        if: matrix.image_name == needs.check_changes.outputs.image_to_build || needs.check_changes.outputs.image_to_build == 'both'
+        if: matrix.image_name == 'llvm_runner_jammy'
         uses: docker/setup-buildx-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64,linux/arm64/v8
 
       - name: Log in to Docker Hub
         if: (matrix.image_name == needs.check_changes.outputs.image_to_build || needs.check_changes.outputs.image_to_build == 'both') && github.event_name == 'push'
