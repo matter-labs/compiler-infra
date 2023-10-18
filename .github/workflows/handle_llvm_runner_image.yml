@@ -12,6 +12,7 @@ jobs:
   check_changes:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pull-requests: read
     outputs:
       image_to_build: ${{ steps.determine_changes.outputs.image_to_build }}
