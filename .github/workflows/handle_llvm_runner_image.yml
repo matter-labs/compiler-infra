@@ -15,7 +15,7 @@ jobs:
       contents: read
       pull-requests: read
     outputs:
-      image_to_build: ${{ steps.determine_changes.outputs.image_to_build }}
+      image_to_build: ${{ steps.set_output.outputs.image_to_build }}
     steps:
       - uses: actions/checkout@v4
 
