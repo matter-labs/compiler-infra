@@ -28,7 +28,7 @@ jobs:
             llvm_runner_jammy:
               - "images/llvm_runner/jammy.Dockerfile"
             both:
-              - ".github/workflows/build_llvm_runner.yml"
+              - ".github/workflows/handle_llvm_runner_image.yml"
 
       - id: set_output
         run: |
