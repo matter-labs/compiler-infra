@@ -78,4 +78,4 @@ jobs:
             matterlabs/${{ matrix.image_name }}:${{ steps.set_output.outputs.sha_short }}
             matterlabs/${{ matrix.image_name }}:latest
           file: images/llvm_runner/${{ matrix.image_name == 'llvm_runner_jammy' && 'jammy.' || '' }}Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.image_name == 'llvm_runner_jammy' && 'linux/amd64,linux/arm64' || 'linux/amd64' }}
