@@ -6,7 +6,7 @@ RUN wget https://github.com/ethereum/solidity/releases/download/$SOLC_VERSION/so
     && mv solc-static-linux solc \
     && chmod +x solc
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 COPY ./zksolc-linux-amd64-musl /usr/local/bin/zksolc
 COPY --from=builder /home/docker/solc /usr/local/bin/
