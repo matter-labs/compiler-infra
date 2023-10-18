@@ -17,6 +17,7 @@ jobs:
       - id: determine_changes
         uses: tj-actions/changed-files@v39
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           files_yaml: |
             llvm_runner:
               - "images/llvm_runner/Dockerfile"
