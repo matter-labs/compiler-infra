@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
     bash git openssl curl libssl-dev sudo ssh-client \
-    cmake gcc g++ ninja-build \
+    cmake gcc-9 g++-9 ninja-build \
     libpq-dev pkg-config \
     software-properties-common jq \
     openssh-client git \
