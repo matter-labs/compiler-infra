@@ -11,12 +11,12 @@ RUN apt-get update && \
     openssh-client git \
     build-essential \
     libncurses5 xz-utils wget gnupg musl-tools && \
-    rm -rf /var/lib/apt/lists/* && \
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set gcc-9 as default for old compiler builds
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9 && \
     update-alternatives --config gcc && \
     gcc --version
-
-
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
