@@ -60,7 +60,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
-          platforms: ${{ matrix.image_name == 'llvm_runner_jammy' && 'linux/amd64,linux/arm64,linux/arm64/v8' || 'linux/amd64' }}
+          platforms: 'linux/amd64,linux/arm64,linux/arm64/v8'
 
       - name: Log in to Docker Hub
         if: github.event_name == 'push'
