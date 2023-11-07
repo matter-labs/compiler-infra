@@ -5,13 +5,18 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
     bash git openssl curl libssl-dev sudo ssh-client \
-    cmake gcc g++ ninja-build \
+    cmake gcc-9 g++-9 ninja-build \
     libpq-dev pkg-config \
     software-properties-common jq \
     openssh-client git \
     build-essential \
     libncurses5 xz-utils wget gnupg musl-tools && \
     rm -rf /var/lib/apt/lists/*
+
+# Set gcc-9 as default for old compiler builds
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9 && \
+    update-alternatives --config gcc && \
+    gcc --version
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
