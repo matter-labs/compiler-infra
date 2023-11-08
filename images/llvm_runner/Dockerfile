@@ -44,10 +44,10 @@ RUN apt-get update && apt-get -y install -y \
 # Hack for installing missing arm64 lib for the Focal dist.
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
       echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main universe" > /etc/apt/sources.list.d/jammy.list && \
-      echo -e "Package: *\nPin: release a=focal\nPin-Priority: 500\n\nPackage: libcvc4-dev\nPin: release a=jammy\nPin-Priority: 600" > /etc/apt/preferences.d/jammy.pref && \
+      echo "Package: *\nPin: release a=focal\nPin-Priority: 500\n\nPackage: libcvc4-dev\nPin: release a=jammy\nPin-Priority: 600" > /etc/apt/preferences.d/jammy.pref && \
       apt-get update && apt-get install -y libcvc4-dev; \
     else \
-      apt-get update && apt-get install -y libcvc4-dev; \
+      apt-get update && apt-get install -y libcvc4-dev || true; \
     fi
 
 ENV PATH=/usr/lib/llvm-15/bin:$PATH \
