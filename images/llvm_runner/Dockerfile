@@ -29,6 +29,13 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \
     apt-get --yes install python3.10 python3.10-dev python3.10-distutils
 
+# Hack for installing missing arm64 lib for the Focal dist.
+
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+      echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main universe" > /etc/apt/sources.list.d/jammy.list && \
+      echo "Package: *\nPin: release a=focal\nPin-Priority: 500\n\nPackage: libcvc4-dev\nPin: release a=jammy\nPin-Priority: 600" > /etc/apt/preferences.d/jammy.pref && \
+    fi
+
 # Required to build solidity fork
 RUN apt-get update && apt-get -y install -y \
     libboost-dev \
@@ -37,18 +44,10 @@ RUN apt-get update && apt-get -y install -y \
     libboost-system-dev \
     libboost-program-options-dev \
     libcln-dev \
+    libcvc4-dev \
     libboost-regex-dev \
     libboost-thread-dev \
     libboost-random-dev
-
-# Hack for installing missing arm64 lib for the Focal dist.
-RUN if [ "$TARGETARCH" = "arm64" ]; then \
-      echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main universe" > /etc/apt/sources.list.d/jammy.list && \
-      echo "Package: *\nPin: release a=focal\nPin-Priority: 500\n\nPackage: libcvc4-dev\nPin: release a=jammy\nPin-Priority: 600" > /etc/apt/preferences.d/jammy.pref && \
-      apt-get update && apt-get install -y libcvc4-dev; \
-    else \
-      apt-get update && apt-get install -y libcvc4-dev; \
-    fi
 
 ENV PATH=/usr/lib/llvm-15/bin:$PATH \
     LD_LIBRARY_PATH=/usr/lib/llvm-15/lib:$LD_LIBRARY_PATH \
