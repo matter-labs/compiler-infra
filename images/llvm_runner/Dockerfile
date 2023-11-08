@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ARG TARGETARCH
 
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
@@ -35,11 +36,19 @@ RUN apt-get update && apt-get -y install -y \
     libboost-test-dev \
     libboost-system-dev \
     libboost-program-options-dev \
-    libcvc4-dev \
     libcln-dev \
     libboost-regex-dev \
     libboost-thread-dev \
     libboost-random-dev
+
+# Hack for installing missing arm64 lib for the Focal dist.
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+      echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main universe" > /etc/apt/sources.list.d/jammy.list && \
+      echo -e "Package: *\nPin: release a=focal\nPin-Priority: 500\n\nPackage: libcvc4-dev\nPin: release a=jammy\nPin-Priority: 600" > /etc/apt/preferences.d/jammy.pref && \
+      apt-get update && apt-get install -y libcvc4-dev; \
+    else \
+      apt-get update && apt-get install -y libcvc4-dev; \
+    fi
 
 ENV PATH=/usr/lib/llvm-15/bin:$PATH \
     LD_LIBRARY_PATH=/usr/lib/llvm-15/lib:$LD_LIBRARY_PATH \
