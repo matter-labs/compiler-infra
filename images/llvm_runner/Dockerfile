@@ -33,7 +33,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
 
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
       echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports jammy main universe" > /etc/apt/sources.list.d/jammy.list && \
-      echo "Package: *\nPin: release a=focal\nPin-Priority: 500\n\nPackage: libcvc4-dev\nPin: release a=jammy\nPin-Priority: 600" > /etc/apt/preferences.d/jammy.pref && \
+      echo "Package: *\nPin: release a=focal\nPin-Priority: 500\n\nPackage: libcvc4-dev\nPin: release a=jammy\nPin-Priority: 600" > /etc/apt/preferences.d/jammy.pref \
     fi
 
 # Required to build solidity fork
