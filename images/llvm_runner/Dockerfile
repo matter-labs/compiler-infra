@@ -47,7 +47,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
       echo "Package: *\nPin: release a=focal\nPin-Priority: 500\n\nPackage: libcvc4-dev\nPin: release a=jammy\nPin-Priority: 600" > /etc/apt/preferences.d/jammy.pref && \
       apt-get update && apt-get install -y libcvc4-dev; \
     else \
-      apt-get update && apt-get install -y libcvc4-dev || true; \
+      apt-get update && apt-get install -y libcvc4-dev \
     fi
 
 ENV PATH=/usr/lib/llvm-15/bin:$PATH \
