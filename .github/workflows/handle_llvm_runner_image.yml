@@ -48,7 +48,7 @@ jobs:
     runs-on: [matterlabs-ci-runner]
     strategy:
       matrix:
-        image_name: [llvm_runner, llvm_runner_jammy]
+        tag_prefix: ["", "-jammy"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
@@ -74,7 +74,7 @@ jobs:
         with:
           push: ${{ github.event_name == 'push' }}
           tags: |
-            matterlabs/${{ matrix.image_name }}:${{ steps.set_output.outputs.sha_short }}
-            matterlabs/${{ matrix.image_name }}:latest
-          file: images/llvm_runner/${{ matrix.image_name == 'llvm_runner_jammy' && 'jammy.' || '' }}Dockerfile
+            matterlabs/llvm_runner:${{ matrix.tag_prefix }}${{ steps.set_output.outputs.sha_short }}
+            matterlabs/llvm_runner:${{ matrix.tag_prefix }}latest
+          file: images/llvm_runner/${{ matrix.tag_prefix == '-jammy' && 'jammy.' || '' }}Dockerfile
           platforms: 'linux/amd64,linux/arm64,linux/arm64/v8'
