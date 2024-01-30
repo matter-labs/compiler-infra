@@ -48,7 +48,7 @@ jobs:
     runs-on: [matterlabs-ci-runner]
     strategy:
       matrix:
-        tag_prefix: ["", "-jammy"]
+        tag_prefix: ["", "jammy-"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
@@ -76,5 +76,5 @@ jobs:
           tags: |
             matterlabs/llvm_runner:${{ matrix.tag_prefix }}${{ steps.set_output.outputs.sha_short }}
             matterlabs/llvm_runner:${{ matrix.tag_prefix }}latest
-          file: images/llvm_runner/${{ matrix.tag_prefix == '-jammy' && 'jammy.' || '' }}Dockerfile
+          file: images/llvm_runner/${{ matrix.tag_prefix == 'jammy-' && 'jammy.' || '' }}Dockerfile
           platforms: 'linux/amd64,linux/arm64,linux/arm64/v8'
