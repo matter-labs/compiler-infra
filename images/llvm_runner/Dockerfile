@@ -11,7 +11,7 @@ RUN apt-get update && \
     software-properties-common jq \
     openssh-client git \
     build-essential \
-    libncurses5 xz-utils wget gnupg musl-tools && \
+    libncurses5 xz-utils wget gnupg musl-tools valgrind && \
     rm -rf /var/lib/apt/lists/*
 
 ENV RUSTUP_HOME=/usr/local/rustup \
