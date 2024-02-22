@@ -10,7 +10,7 @@ RUN apt-get update && \
     software-properties-common jq \
     openssh-client git \
     build-essential \
-    libncurses5 xz-utils wget gnupg musl-tools && \
+    libncurses5 xz-utils wget gnupg musl-tools valgrind && \
     rm -rf /var/lib/apt/lists/*
 
 # Set gcc-9 as default for old compiler builds
@@ -27,7 +27,7 @@ RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - && \
     apt-add-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main" && \
     apt-get --yes update && \
-    apt-get --yes install cmake clang-15 lld-15
+    apt-get --yes install cmake clang-15 lld-15 clang-tidy-15
 
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \
