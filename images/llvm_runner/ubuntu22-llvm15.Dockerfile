@@ -1,0 +1,72 @@
+FROM ubuntu:22.04
+
+# Correctly handle errors with pipe commands
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Use defaults from apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required apt packages
+RUN apt-get update && \
+    apt-get install --yes --no-install-recommends \
+    bash=5.1* \
+    git=1:2.34.* \
+    openssl=3.0.* \
+    curl=7.81.* \
+    libssl-dev=3.0.* \
+    sudo=1.9.* \
+    cmake=3.22.* \
+    ninja-build=1.10* \
+    libpq-dev=14.* \
+    pkg-config=0.29* \
+    jq=1.6* \
+    openssh-client=1:8* \
+    build-essential=12.9* \
+    libncurses5=6.3* \
+    xz-utils=5.2* \
+    wget=1.21* \
+    gnupg=2.2* \
+    musl-tools=1.2* \
+    valgrind=1:3.18* \
+    clang-15=1:15.0.* \
+    lld-15=1:15.0.* \
+    clang-tidy-15=1:15.0.* \
+    libboost-dev=1.74* \
+    libboost-filesystem-dev=1.74* \
+    libboost-test-dev=1.74* \
+    libboost-system-dev=1.74* \
+    libboost-program-options-dev=1.74* \
+    libboost-regex-dev=1.74* \
+    libboost-thread-dev=1.74* \
+    libboost-random-dev=1.74* \
+    libcvc4-dev=1.8* \
+    libcln-dev=1.3* \
+    gcc-9=9.* \
+    g++-9=9.* \
+    software-properties-common=0.99.* \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python 3.12
+RUN add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get install --yes --no-install-recommends \
+        python3.12=3.12* \
+        python3.12-dev=3.12* \
+        python3.12-distutils=3.12* \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set gcc-9 as default for old compiler builds
+RUN update-alternatives --install \
+    /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9 && \
+    update-alternatives --config gcc
+
+# Install Rust
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+
+# Set required environment variables
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    CARGO_NET_GIT_FETCH_WITH_CLI=true \
+    PATH=/usr/lib/llvm-15/bin:/usr/local/cargo/bin:${PATH} \
+    LD_LIBRARY_PATH=/usr/lib/llvm-15/lib:${LD_LIBRARY_PATH} \
+    LLVM_VERSION=15 \
+    CI_RUNNING=true
