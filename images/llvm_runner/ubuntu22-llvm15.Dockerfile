@@ -57,13 +57,14 @@ RUN update-alternatives --install \
     update-alternatives --config gcc
 
 # Install Rust
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
-
-# Set required environment variables
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     CARGO_NET_GIT_FETCH_WITH_CLI=true \
-    PATH=/usr/lib/llvm-15/bin:/usr/local/cargo/bin:${PATH} \
+    PATH=/usr/local/cargo/bin:$PATH
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+
+# Set required environment variables
+ENV PATH=/usr/lib/llvm-15/bin:${PATH} \
     LD_LIBRARY_PATH=/usr/lib/llvm-15/lib:${LD_LIBRARY_PATH} \
     LLVM_VERSION=15 \
     CI_RUNNING=true
