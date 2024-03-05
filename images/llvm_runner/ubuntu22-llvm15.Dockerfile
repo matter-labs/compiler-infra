@@ -1,8 +1,5 @@
 FROM ubuntu:22.04
 
-# Correctly handle errors with pipe commands
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
 # Use defaults from apt
 ENV DEBIAN_FRONTEND=noninteractive
 
