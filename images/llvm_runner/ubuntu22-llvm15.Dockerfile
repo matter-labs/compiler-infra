@@ -41,6 +41,7 @@ RUN apt-get update && \
     gcc-9=9.* \
     g++-9=9.* \
     software-properties-common=0.99.* \
+    libz3-dev=4.8.* \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python 3.12
