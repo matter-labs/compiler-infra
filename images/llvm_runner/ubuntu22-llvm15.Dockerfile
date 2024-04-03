@@ -28,6 +28,7 @@ RUN apt-get update && \
     clang-15=1:15.0.* \
     lld-15=1:15.0.* \
     clang-tidy-15=1:15.0.* \
+    clang-format-15=1:15.0.* \
     libboost-dev=1.74* \
     libboost-filesystem-dev=1.74* \
     libboost-test-dev=1.74* \
@@ -44,18 +45,26 @@ RUN apt-get update && \
     libz3-dev=4.8.* \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python 3.12
+# Install Python 3.11
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install --yes --no-install-recommends \
-        python3.12=3.12* \
-        python3.12-dev=3.12* \
-        python3.12-distutils=3.12* \
+        python3.11=3.11* \
+        python3.11-dev=3.11* \
+        python3-distutils=3.10* \
+        python3.11-venv=3.11* \
+        python3-pip=22.0.* \
     && rm -rf /var/lib/apt/lists/*
 
 # Set gcc-9 as default for old compiler builds
 RUN update-alternatives --install \
     /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9 && \
     update-alternatives --config gcc
+
+# Set python3.11 as default python
+RUN update-alternatives --install /usr/local/bin/python python \
+    /usr/bin/python3.11 3 && \
+    update-alternatives --install /usr/local/bin/python3 python3 \
+    /usr/bin/python3.11 3
 
 # Install Rust
 ENV RUSTUP_HOME=/usr/local/rustup \
