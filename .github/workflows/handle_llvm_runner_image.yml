@@ -13,7 +13,7 @@ jobs:
     runs-on: matterlabs-ci-runner
     strategy:
       matrix:
-        tag_prefix: ["ubuntu22-llvm15"]
+        tag_prefix: ["ubuntu22-llvm15", "ubuntu22-llvm17"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
         with:
           dockerfile: images/llvm_runner/${{ matrix.tag_prefix }}.Dockerfile
           ignore: DL4006
-      
+
       - name: Identify short SHA
         id: short_sha
         run: echo "sha=$(git rev-parse --short HEAD)" >> "${GITHUB_OUTPUT}"
