@@ -47,11 +47,11 @@ RUN curl https://apt.llvm.org/llvm.sh -sSf | bash -s -- 17 all && \
 # Install Python 3.11
 RUN add-apt-repository ppa:deadsnakes/ppa && \
     apt-get install --yes --no-install-recommends \
-        python3.11 \
-        python3.11-dev \
-        python3-distutils \
-        python3.11-venv \
-        python3-pip \
+        python3.11=3.11.* \
+        python3.11-dev=3.11.* \
+        python3-distutils=3.8.* \
+        python3.11-venv=3.11.* \
+        python3-pip=3.11.* \
     && rm -rf /var/lib/apt/lists/*
 
 # Set gcc-9 as default for old compiler builds
