@@ -13,7 +13,7 @@ jobs:
     runs-on: matterlabs-ci-runner
     strategy:
       matrix:
-        tag_prefix: ["ubuntu22-llvm15", "ubuntu22-llvm17"]
+        tag_prefix: ["ubuntu22-llvm15", "ubuntu22-llvm17", "ubuntu20-llvm17"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
