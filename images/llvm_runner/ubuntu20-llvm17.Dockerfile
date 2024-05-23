@@ -51,7 +51,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa && \
         python3.11-dev=3.11.* \
         python3-distutils=3.8.* \
         python3.11-venv=3.11.* \
-        python3-pip=3.11.* \
+        python3-pip=20.0.* \
     && rm -rf /var/lib/apt/lists/*
 
 # Set gcc-9 as default for old compiler builds
