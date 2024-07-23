@@ -10,7 +10,7 @@ on:
 
 jobs:
   handle_image:
-    runs-on: matterlabs-ci-runner
+    runs-on: matterlabs-default-infra-runners
     strategy:
       matrix:
         tag_prefix: ["ubuntu20-llvm17", "ubuntu22-llvm15", "ubuntu22-llvm17"]
