@@ -39,6 +39,8 @@ RUN apt-get update && \
     g++-9=9.* \
     software-properties-common=0.99.* \
     libz3-dev=4.8.* \
+    file=1:5.* \
+    nano=6.* \
     && rm -rf /var/lib/apt/lists/*
 
 # Install LLVM 17
@@ -78,3 +80,12 @@ ENV PATH=/usr/lib/llvm-17/bin:${PATH} \
     LD_LIBRARY_PATH=/usr/lib/llvm-17/lib:${LD_LIBRARY_PATH} \
     LLVM_VERSION=17 \
     CI_RUNNING=true
+
+# Replace default libm.a which is a linker script on x86_64 to an actual lib implementation
+# to allow Rust to link against it without issues
+ARG TARGETPLATFORM
+RUN if [ "${TARGETPLATFORM}" = "linux/amd64" ]; then \
+    rm -f /lib/x86_64-linux-gnu/libm.a && \
+    ar -cqT /lib/x86_64-linux-gnu/libm.a /lib/x86_64-linux-gnu/libm-2.35.a /lib/x86_64-linux-gnu/libmvec.a && \
+    bash -c 'ar -M <<< $(echo -e "create /lib/x86_64-linux-gnu/libm.a\naddlib /lib/x86_64-linux-gnu/libm.a\nsave\nend")'; \
+    fi
