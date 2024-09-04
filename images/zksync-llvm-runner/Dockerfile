@@ -24,7 +24,6 @@ RUN apt-get update && \
     wget=1.21* \
     gnupg=2.2* \
     musl-tools=1.2* \
-    valgrind=1:3.18* \
     libboost-dev=1.74* \
     libboost-filesystem-dev=1.74* \
     libboost-test-dev=1.74* \
@@ -89,3 +88,11 @@ RUN if [ "${TARGETPLATFORM}" = "linux/amd64" ]; then \
     ar -cqT /lib/x86_64-linux-gnu/libm.a /lib/x86_64-linux-gnu/libm-2.35.a /lib/x86_64-linux-gnu/libmvec.a && \
     bash -c 'ar -M <<< $(echo -e "create /lib/x86_64-linux-gnu/libm.a\naddlib /lib/x86_64-linux-gnu/libm.a\nsave\nend")'; \
     fi
+
+# Install Valgrind
+ENV VALGRIND_VERSION=3.23.0
+# hadolint ignore=DL3003
+RUN curl -Lo valgrind-${VALGRIND_VERSION}.tar.bz2 https://sourceware.org/pub/valgrind/valgrind-${VALGRIND_VERSION}.tar.bz2 && \
+  tar -xvf valgrind-${VALGRIND_VERSION}.tar.bz2 && \
+  (cd valgrind-${VALGRIND_VERSION} && ./configure && make && make install) && \
+  rm -rf valgrind-${VALGRIND_VERSION}.tar.bz2 valgrind-${VALGRIND_VERSION}
