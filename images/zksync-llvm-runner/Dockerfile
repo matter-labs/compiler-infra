@@ -40,6 +40,7 @@ RUN apt-get update && \
     libz3-dev=4.8.* \
     file=1:5.* \
     nano=6.* \
+    libc6-dbg=2.35* \
     && rm -rf /var/lib/apt/lists/*
 
 # Install LLVM
