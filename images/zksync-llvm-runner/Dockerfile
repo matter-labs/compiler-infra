@@ -44,7 +44,8 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Install LLVM
-RUN curl https://apt.llvm.org/llvm.sh -sSf | bash -s -- 18 all && \
+ENV LLVM_VERSION=19
+RUN curl https://apt.llvm.org/llvm.sh -sSf | bash -s -- ${LLVM_VERSION} all && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Python 3.11
@@ -76,9 +77,8 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 
 # Set required environment variables
-ENV PATH=/usr/lib/llvm-18/bin:${PATH} \
-    LD_LIBRARY_PATH=/usr/lib/llvm-18/lib:${LD_LIBRARY_PATH} \
-    LLVM_VERSION=18 \
+ENV PATH=/usr/lib/llvm-${LLVM_VERSION}/bin:${PATH} \
+    LD_LIBRARY_PATH=/usr/lib/llvm-${LLVM_VERSION}/lib:${LD_LIBRARY_PATH} \
     CI_RUNNING=true
 
 # Replace default libm.a which is a linker script on x86_64 to an actual lib implementation
