@@ -74,7 +74,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     CARGO_NET_GIT_FETCH_WITH_CLI=true \
     PATH=/usr/local/cargo/bin:$PATH
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | bash -s -- -y
 
 # Set required environment variables
 ENV PATH=/usr/lib/llvm-${LLVM_VERSION}/bin:${PATH} \
