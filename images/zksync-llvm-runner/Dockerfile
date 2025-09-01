@@ -44,7 +44,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Install LLVM
-ENV LLVM_VERSION=19
+ENV LLVM_VERSION=20
 RUN curl https://apt.llvm.org/llvm.sh -sSf | bash -s -- ${LLVM_VERSION} all && \
     rm -rf /var/lib/apt/lists/*
 
